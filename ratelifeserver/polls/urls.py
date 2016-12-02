@@ -6,3 +6,4 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'questionPage.html/', views.answer, name='answer'),
 ]
+
