@@ -27,28 +27,30 @@
     </ul>
   </div>
 </nav>
-<div class="container" id=questionsContainer>
+<div class="container-fluid" id=questionsContainer>
 
 
 <table style="width:50%">
-  
-  <tr>
-    <td> <a href="questionPage.html"> Question1 </a></td>
-    <td> Votes for ...</a></td>
-    
-  </tr>
-  <tr>
-    <td> <a href="questionPage.html"> Question2</td>
-    <td> Votes for ...</a></td>
+  <thead>
+    <th>Question</th>
+    <th>Votes</th>
+  </thead>
+  <tbody>
+  
+  {% for question in all_questions %}
+    <tr>
+        <td>
+        <a href = /polls/{{question.question_id}} > {{question.question_text}} </a>
 
-  </tr>
-  <tr>
-    <td> <a href="questionPage.html"> Question3</td>
-    <td> Votes for ...</a></td>
+        </td>        
+        <td>
+         {{question.votes}}
+        </td>
 
-  </tr>
+    </tr>
+  {% endfor %}
+  </tbody>
 </table>
-<h3> ASK A NEW QUESTION </h3> 
-
+</div>
 </body>
 </html>
