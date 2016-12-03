@@ -14,6 +14,7 @@
 </head>
 <body>
 
+
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -28,6 +29,25 @@
   </div>
 </nav>
 
+<script>
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = $.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+</script>
+
 <div class="container-fluid" id=questionsContainer>
 
 <h3><b>
@@ -37,7 +57,7 @@
 </b></h3>
 </br>
 
-<table style="width:30%">
+<table style="width:50%">
   <thead>
     <th>Answer</th>
     <th>Votes</th>
@@ -47,17 +67,19 @@
    {%for answer in all_answers %}
     <tr>
         <td>
+        <h4>
         {{answer.answer_text}}
+        </h4>
         </td>        
         <td>
          {{answer.votes}}
          </td>
          <td> 
 
-         <form action="" id = "voteBtn">
+         <form action="" questionID= {{question.0.question_id}} >
          {% csrf_token %}
-          <input type="hidden" value= {{answer.answer_id}} name= "answer_id">
-          <input type="submit" value="+" />
+          <input type="hidden" value= {{answer.answer_id}} name= "answer_id" id = "my_vote" >
+          <input type="submit" value="vote" id = "voteBtn" />
          </form>
         </td>
 
@@ -68,12 +90,22 @@
 </br>
 
 <script>
-  $("#voteBtn").submit(function(event){
-    event.preventDefault();
-    answer_id = $(this).find("input[name='answer_id']").val(),
-    url= "/polls/"+ {{my_question}}.question_id + "/vote"
-    var message = $.post(url, {id: answer_id });
+  $("#voteBtn").click(function(e){
+  event.preventDefault();
+  $.ajax({
+  type: "POST",
+  url: "/polls/vote/",
+  data: { id: $("#my_vote")[0].value}
   });
+});
+  
+
+  /*  event.preventDefault();
+    answer_id = $(this).find("input[name='answer_id']").val(),
+    url = "/polls/"+ {{my_question}}.question_id 
+    var message = $.post(url+"/vote", {id: answer_id });
+  });
+  */
 </script>
 
   

@@ -46,7 +46,8 @@ def update_questions(request):
     return HttpResponseRedirect('/polls/')
 
 def vote(request):
-	my_answer_id= request.POST.id  
+	my_answer_id= request.POST.data.id
 	my_answer= Answer.objects.filter(answer_id=my_answer_id).votes=+1
 	my_answer.save()
 	return HttpResponseRedirect('/polls/'+request.POST.answer.origin_id)
+
