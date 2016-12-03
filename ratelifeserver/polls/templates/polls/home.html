@@ -29,28 +29,42 @@
 </nav>
 <div class="container-fluid" id=questionsContainer>
 
-
+<col md-6>
 <table style="width:50%">
   <thead>
-    <th>Question</th>
-    <th>Votes</th>
+    <h3>
+    <th><h3><b>Question</b> </h3></th>
+    <th><h3><center><b>Votes</b></center></h3></th>
+    </h3>
   </thead>
   <tbody>
   
   {% for question in all_questions %}
     <tr>
         <td>
-        <a href = /polls/{{question.question_id}} > {{question.question_text}} </a>
+        <h4><b><a href = /polls/{{question.question_id}} style="color:#FF0000";> {{question}} </b></a></h4>
 
         </td>        
         <td>
-         {{question.votes}}
+         <center>{{question.bestVotes}} for {{question.bestAnswer}}</center>
         </td>
 
     </tr>
   {% endfor %}
   </tbody>
 </table>
+</br>
+</br>
+
+<div id="question_form">
+<form action="/polls/update_questions/" method="post">
+    {% csrf_token %}
+    {{ form.question_text }}
+    </br>
+    </br>
+    <input type="submit" value="Submit" />
+</form>
+</div>
 </div>
 </body>
 </html>

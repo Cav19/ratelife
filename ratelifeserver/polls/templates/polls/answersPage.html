@@ -27,30 +27,67 @@
     </ul>
   </div>
 </nav>
+
 <div class="container-fluid" id=questionsContainer>
 
+<h3><b>
+{%for my_question in question %}
+{{my_question}}
+{% endfor %}
+</b></h3>
+</br>
 
-<table style="width:50%">
+<table style="width:30%">
   <thead>
     <th>Answer</th>
     <th>Votes</th>
   </thead>
+
   <tbody>
-  
    {%for answer in all_answers %}
     <tr>
         <td>
         {{answer.answer_text}}
-
         </td>        
         <td>
          {{answer.votes}}
+         </td>
+         <td> 
+
+         <form action="" id = "voteBtn">
+         {% csrf_token %}
+          <input type="hidden" value= {{answer.answer_id}} name= "answer_id">
+          <input type="submit" value="+" />
+         </form>
         </td>
 
     </tr>
   {% endfor %}
   </tbody>
 </table>
+</br>
+
+<script>
+  $("#voteBtn").submit(function(event){
+    event.preventDefault();
+    answer_id = $(this).find("input[name='answer_id']").val(),
+    url= "/polls/"+ {{my_question}}.question_id + "/vote"
+    var message = $.post(url, {id: answer_id });
+  });
+</script>
+
+  
+<div id="answer_form">
+<form action="/polls/update_answers/" method="post">
+    {% csrf_token %}
+    {{ form.answer_text }}
+    {{ form.origin_id.as_hidden }}
+    </br>
+    </br>
+    <input type="submit" value="Submit" />
+</form>
+</div>
+
 </div>
 </body>
 </html>
